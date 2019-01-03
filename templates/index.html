@@ -1,4 +1,5 @@
 {% import "post_macros.html" as post_macros %}
+{% import "menu_macros.html" as menu_macros %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,21 +26,9 @@
 
     <body class="hack dark main container">
         {% block content %}
-            {% block header %}
-                {% if config.extra.after_dark_menu %}
-                    <header>
-                        <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
-                        {% for item in config.extra.after_dark_menu %}
-                            <a itemprop="url"
-                               class="{% if item.url | replace(from="$BASE_URL", to=config.base_url) == current_url %}active{% endif %}"
-                               href="{{ item.url | safe | replace(from="$BASE_URL", to=config.base_url) }}">
-                                <span itemprop="name">{{ item.name }}
-                                </span></a>
-                        {% endfor %}
-                        </nav>
-                    </header>
-                {% endif %}
-            {% endblock header %}
+          {% block header %}
+            {{  menu_macros::header_items() }}
+          {% endblock header %}
 
             <main>
                 {% if config.extra.after_dark_title %}
@@ -47,6 +36,7 @@
                         <h1>{{ config.extra.after_dark_title }}</h1>
                     </header>
                 {% endif %}
+
                 {% for page in paginator.pages %}
                     {{ post_macros::page_in_list(page=page) }}
                 {% endfor %}
